@@ -21,15 +21,15 @@ class MessageTest extends TestCase
     protected $ins;
 
     public function setUp() {
-        $this->ins = new WP_CLI_Bulk_Convert_Images();
+        $this->ins = new Bulk_Convert_Images();
     }
 
     public function testValidFileTypes() {
-        $this->assertEquals(WP_CLI_Bulk_Convert_Images::VALID_FILE_TYPES, ['jpg', 'jpeg', 'gif', 'png']);
+        $this->assertEquals(Bulk_Convert_Images_Logic::VALID_FILE_TYPES, ['jpg', 'jpeg', 'gif', 'png']);
     }
 
     public function testAllowedMimeTypes() {
-        $this->assertEquals(WP_CLI_Bulk_Convert_Images::ALLOWED_MIMETYPES, [
+        $this->assertEquals(Bulk_Convert_Images_Logic::ALLOWED_MIMETYPES, [
             'jpg' => 'image/jpg',
             'jpeg' => 'image/jpeg',
             'png' => 'image/png',
@@ -41,7 +41,7 @@ class MessageTest extends TestCase
      * @dataProvider dataProviderGetExtension
      */
     public function testGetExtension($actual, $expected) {
-        $this->assertEquals($this->ins->get_extension($actual), $expected);
+        $this->assertEquals(Bulk_Convert_Images_Logic::get_extension($actual), $expected);
     }
     public function dataProviderGetExtension() {
         return [
@@ -58,7 +58,7 @@ class MessageTest extends TestCase
     }
 
     public function testGetPosts() {
-        $posts = $this->ins->get_posts(1);
+        $posts = Bulk_Convert_Images_Logic::get_posts(1);
         $this->assertEquals(empty($posts), false);
     }
 
@@ -66,7 +66,7 @@ class MessageTest extends TestCase
      * @dataProvider dataProviderAllowedFile
      */
     public function testAllowedFile($actualMimeType, $actualExt, $expected) {
-        $this->assertEquals($this->ins->allowed_file($actualMimeType, $actualExt), $expected);
+        $this->assertEquals(Bulk_Convert_Images_Logic::allowed_file($actualMimeType, $actualExt), $expected);
     }
     public function dataProviderAllowedFile() {
         return [
