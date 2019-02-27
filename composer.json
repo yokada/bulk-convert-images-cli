@@ -1,0 +1,17 @@
+{
+    "name": "yokada/bulk-convert-images-cli",
+    "description": "WordPress media images you registered can be convert this cli command using wp-cli.",
+    "type": "command",
+    "require": {
+        "wp-cli/wp-cli": "^2.1",
+        "wp-cli/wp-cli-bundle": "^2.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "yokada",
+            "email": "yokada.moo.jp@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
