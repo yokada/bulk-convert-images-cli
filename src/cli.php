@@ -109,7 +109,7 @@ class WP_CLI_Bulk_Convert_Images extends WP_CLI_Command {
 
                 // 画像保存パス
                 $willSavePath = dirname($imagePath) . '/' . basename($imagePath, '.' . $origExt) . '.' . $newExt;
-                if (!$this->valid_save_path($willSavePath, $origExt)) {
+                if (!$this->valid_save_path($willSavePath, $imagePath, $newExt, $origExt)) {
                     WP_CLI::warning(sprintf('Invalid savepath detected, postId: %d, willSavePath: %s', $post->ID, $willSavePath));
                     imagedestroy($imageRes);
                     continue;
@@ -169,13 +169,21 @@ class WP_CLI_Bulk_Convert_Images extends WP_CLI_Command {
         return (bool) preg_match($regex, $guid);
     }
 
-    public function valid_save_path($willSavePath) {
-        $willSavePath = realpath($willSavePath);
-        if (mb_strpos($willSavePath, $this->uploadDir['basedir']) === 0) {
-            return true;
+    public function valid_save_path($willSavePath, $origPath, $newExt, $origExt) {
+        if (mb_strpos($willSavePath, $this->uploadDir['basedir']) !== 0) {
+            return false;
+        } elseif (realpath($origPath) === false ) {
+            return false;
+        } else {
+            $newPath = dirname($willSavePath) . '/' . basename($willSavePath, '.' . $newExt);
+            $oldPath = dirname($origPath) . '/' . basename($origPath, '.' . $origExt);
+            if ($newPath !== $oldPath) {
+                return false;
+            }
         }
-        return false;
+        return true;
     }
+
 
     public function update_attachment($ID, $guid, $newMimeType) {
         global $wpdb;
